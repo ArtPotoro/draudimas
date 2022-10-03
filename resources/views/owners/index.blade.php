@@ -11,6 +11,7 @@
         <tr>
             <th>Name</th>
             <th>Surname</th>
+            <th>Cars</th>
         </tr>
         </thead>
         <tbody>
@@ -18,6 +19,11 @@
             <tr>
                 <td>{{ $owner->name }}</td>
                 <td>{{ $owner->surname }}</td>
+                <td>
+                @foreach($owner->car as $car)
+                 {{ $car->model}} - {{$car->brand }} <br>
+                @endforeach
+                </td>
                 <td><a class="btn btn-success" href="{{ route('owners.edit', $owner->id) }}">Adjust</a> </td>
                 <td>
                     <form action="{{ route('owners.destroy', $owner->id) }}" method="post">

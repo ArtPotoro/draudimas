@@ -13,6 +13,7 @@
             <th>Brand</th>
             <th>Model</th>
             <th>Owner_id</th>
+            <th>Owner Name & Surname</th>
         </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                 <td>{{ $car->brand }}</td>
                 <td>{{ $car->model }}</td>
                 <td>{{ $car->owner_id }}</td>
+                <td>{{ $car->owner->name." ".$car->owner->surname }}</td>
                 <td><a class="btn btn-success" href="{{ route('cars.edit', $car->id) }}">Adjust</a> </td>
                 <td>
                     <form action="{{ route('cars.destroy', $car->id) }}" method="post">

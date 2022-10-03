@@ -21,8 +21,12 @@
             <input class="form-control" type="text" name="model" value="{{ $car->model }}">
         </div>
         <div  class="mb-3">
-            <label class="form-label">Owner_id:</label>
-            <input class="form-control" type="text" name="owner_id"  value="{{ $car->owner_id }}">
+{{--            <label class="form-label">Owner_id:</label>--}}
+{{--            <input class="form-control" type="text" name="owner_id"  value="{{ $car->owner_id }}">--}}
+            @foreach($owners as $owner)
+                <option value="{{$owner->id}}">{{$owner->name}} {{$owner->surname}}</option>
+
+            @endforeach
         </div>
 
         <button class="btn btn-primary">Renew</button>
