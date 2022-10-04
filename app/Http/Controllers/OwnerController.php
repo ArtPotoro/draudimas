@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\Owner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OwnerController extends Controller
 {
@@ -38,9 +39,20 @@ class OwnerController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'=> ['required','min:3', 'max:16'],
+            'surname'=> ['required', 'min:3', 'max:16'],
+            'email'=>['required', 'email:rfc,dns','unique:App\Models\Owner,email']
+        ],[
+            'name.*'=>'Vardas laukas privalo būtį užpildytas.',
+                'surname.*'=>'Pavardės laukas privalo būti užpildytas.',
+                'email.*'=>'Elektroninio pašto laukas privalomas.'
+            ]
+        );
         $owner=new Owner();
         $owner->name=$request->name;
         $owner->surname=$request->surname;
+        $owner->email=$request->email;
         $owner->save();
         return redirect()->route('owners.index');
     }
@@ -78,6 +90,7 @@ class OwnerController extends Controller
     {
         $owner->name=$request->name;
         $owner->surname=$request->surname;
+        $owner->email=$request->email;
         $owner->save();
         return redirect()->route('owners.index');
     }

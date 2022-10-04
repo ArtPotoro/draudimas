@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\Owner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CarController extends Controller
 {
@@ -38,6 +39,16 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'reg_number'=>['required','alpha_num','min:6','max:6','unique:App\Models\Cars,reg_number'],
+            'brand'=>['required', 'min:3', 'max:64'],
+            'model'=>['required', 'min:3', 'max:64']
+        ],[
+            'reg_number.*'=>'Registracijos numeris privalo būtį 6 simbolių.',
+            'brand.*'=>'Privalomą užpildytį šį lauką, min 3 simboliai, max 64 simboliai.',
+            'model.*'=>'Privalomą užpildytį šį lauką, min 3 simboliai, max 64 simboliai.'
+        ]);
         $car=new Car();
         $car->reg_number=$request->reg_number;
         $car->brand=$request->brand;

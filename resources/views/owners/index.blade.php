@@ -12,6 +12,7 @@
             <th>Name</th>
             <th>Surname</th>
             <th>Cars</th>
+            <th>Email</th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                  {{ $car->model}} - {{$car->brand }} <br>
                 @endforeach
                 </td>
+                <td>{{ $owner->email }}</td>
                 <td><a class="btn btn-success" href="{{ route('owners.edit', $owner->id) }}">Adjust</a> </td>
                 <td>
                     <form action="{{ route('owners.destroy', $owner->id) }}" method="post">
