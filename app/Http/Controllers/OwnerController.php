@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Owner;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,7 +19,8 @@ class OwnerController extends Controller
     {
         $owners= Owner::all();
         $cars=Car::all();
-        return view("owners.index",['owners'=>$owners, 'cars'=>$cars]);
+        $users=User::all();
+        return view("owners.index",['owners'=>$owners, 'cars'=>$cars, 'user'=>$users]);
     }
 
     /**
@@ -47,8 +49,7 @@ class OwnerController extends Controller
             'name.*'=>'Vardas laukas privalo būtį užpildytas.',
                 'surname.*'=>'Pavardės laukas privalo būti užpildytas.',
                 'email.*'=>'Elektroninio pašto laukas privalomas.'
-            ]
-        );
+            ]);
         $owner=new Owner();
         $owner->name=$request->name;
         $owner->surname=$request->surname;
@@ -88,6 +89,15 @@ class OwnerController extends Controller
      */
     public function update(Request $request, Owner $owner)
     {
+        $request->validate([
+            'name'=> ['required','min:3', 'max:16'],
+            'surname'=> ['required', 'min:3', 'max:16'],
+            'email'=>['required', 'email:rfc,dns','unique:App\Models\Owner,email']
+        ],[
+            'name.*'=>'Vardas laukas privalo būtį užpildytas.',
+            'surname.*'=>'Pavardės laukas privalo būti užpildytas.',
+            'email.*'=>'Elektroninio pašto laukas privalomas.'
+        ]);
         $owner->name=$request->name;
         $owner->surname=$request->surname;
         $owner->email=$request->email;

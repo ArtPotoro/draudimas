@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('cars', function (Blueprint $table){
-            $table->foreign('owner_id')->references('id')->on('owners');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role', 64)->nullable()->default(null);
         });
     }
 
@@ -25,6 +25,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cars');
+        Schema::table('users', function (Blueprint $table) {
+            Schema::table('users', function($table){
+                $table->dropColumn('role');
+            });
+        });
     }
 };

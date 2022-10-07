@@ -4,11 +4,13 @@
     <div class="d-grid gap-2 col-6 mx-auto">
         <a class="btn btn-primary btn-lg btn-block" href="{{ route('cars.create') }}">Add Car</a>
         <a class="btn btn-warning btn-lg btn-block pull-right" href="{{ route('owners.index') }}">Owners Info</a>
+        <a class="btn btn-primary btn-lg bnt-block" href="{{ route('shortcodes.create') }}">Add Short Code</a>
     </div>
-
+    <img src="{{asset('storage/mad.png')}}" style="width: 200px">
     <table class="table">
         <thead>
         <tr>
+            <th>Photo</th>
             <th>Reg_number</th>
             <th>Brand</th>
             <th>Model</th>
@@ -19,6 +21,11 @@
         <tbody>
         @foreach($cars as $car)
             <tr>
+                <td>
+                    @if ($car->img!=null)
+                        <img src="{{route('image.carImage',$car->id)}}" style="width: 200px;">
+                    @endif
+                </td>
                 <td>{{ $car->reg_number }}</td>
                 <td>{{ $car->brand }}</td>
                 <td>{{ $car->model }}</td>

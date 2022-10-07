@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('email_in_owners');
+        Schema::dropIfExists('email');
     }
 };

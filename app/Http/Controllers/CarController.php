@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Owner;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
+
 class CarController extends Controller
 {
+
+    public function __construct()
+    {
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +25,10 @@ class CarController extends Controller
      */
     public function index()
     {
+        $users=User::all();
+        $owners=Owner::all();
         $cars= Car::all();
-        return view("cars.index",['cars'=>$cars]);
+        return view("cars.index",['cars'=>$cars, 'owners'=>$owners, 'users'=>$users]);
     }
 
     /**
@@ -28,6 +39,7 @@ class CarController extends Controller
     public function create()
     {
         $owners=Owner::all();
+
         return view('cars.create', ['owners'=>$owners]);
     }
 
@@ -41,7 +53,7 @@ class CarController extends Controller
     {
 
         $request->validate([
-            'reg_number'=>['required','alpha_num','min:6','max:6','unique:App\Models\Cars,reg_number'],
+            'reg_number'=>['required','alpha_num','min:6','max:6','unique:App\Models\Car,reg_number'],
             'brand'=>['required', 'min:3', 'max:64'],
             'model'=>['required', 'min:3', 'max:64']
         ],[
@@ -49,7 +61,9 @@ class CarController extends Controller
             'brand.*'=>'Privalomą užpildytį šį lauką, min 3 simboliai, max 64 simboliai.',
             'model.*'=>'Privalomą užpildytį šį lauką, min 3 simboliai, max 64 simboliai.'
         ]);
+
         $car=new Car();
+
         $car->reg_number=$request->reg_number;
         $car->brand=$request->brand;
         $car->model=$request->model;
@@ -91,10 +105,23 @@ class CarController extends Controller
      */
     public function update(Request $request, Car $car)
     {
+        $request->validate([
+//            'reg_number'=>['required','min:6','max:6','unique:App\Models\Car,reg_number'],
+            'brand'=>['required', 'min:3', 'max:64'],
+            'model'=>['required', 'min:3', 'max:64']
+        ],[
+            'reg_number.*'=>'Registracijos numeris privalo būtį 6 simbolių.',
+            'brand.*'=>'Privalomą užpildytį šį lauką, min 3 simboliai, max 64 simboliai.',
+            'model.*'=>'Privalomą užpildytį šį lauką, min 3 simboliai, max 64 simboliai.'
+        ]);
         $car->reg_number=$request->reg_number;
         $car->brand=$request->brand;
         $car->model=$request->model;
         $car->owner_id=$request->owner_id;
+        $img=$request->file('image');
+        $filename=$car->id.'.'.$img->extension();
+        $car->img=$filename;
+        $img->storeAs('cars',$filename );
         $car->save();
         return redirect()->route('cars.index');
     }

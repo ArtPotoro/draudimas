@@ -11,7 +11,7 @@
 
 
 
-    <form action="{{ route('cars.update', $car->id) }}" method="post">
+    <form action="{{ route('cars.update', $car->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -42,14 +42,18 @@
             @endif
         </div>
         <div  class="mb-3">
-{{--            <label class="form-label">Owner_id:</label>--}}
+            <label class="form-label">Owner_id: {{old('owner_id')}}</label>
 {{--            <input class="form-control" type="text" name="owner_id"  value="{{ $car->owner_id }}">--}}
             <select class="form-control" name="owner_id">
             @foreach($owners as $owner)
-                <option value="{{$owner->id}}">{{$owner->name}} {{$owner->surname}}</option>
+                <option value="{{$owner->id}}" @if(old('owner_id')==$owner->id) selected @endif>{{$owner->name}} {{$owner->surname}}</option>
 
             @endforeach
             </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Photo</label>
+            <input type="file" class="form-control" name="image">
         </div>
 
         <button class="btn btn-primary">Renew</button>

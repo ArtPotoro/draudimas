@@ -42,11 +42,11 @@
         <div  class="mb-3">
             <label class="form-label">Owner_id:</label>
             <input class="form-control @if ($errors->has('owner_id')) is-invalid @endif" type="text" name="owner_id" value="{{old('owner_id')}}">
-            @if ($errors->has('owner_id'))
-                @foreach($errors->get('owner_id') as $error)
-                    {{$error}} <br>
-                @endforeach
-            @endif
+{{--            @if ($errors->has('owner_id'))--}}
+{{--                @foreach($errors->get('owner_id') as $error)--}}
+{{--                    {{$error}} <br>--}}
+{{--                @endforeach--}}
+{{--            @endif--}}
         </div>
 
 
