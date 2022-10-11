@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CarGalleryController;
 use App\Http\Controllers\ImageController;
 use App\Models\Car;
 use App\Http\Controllers\OwnerController;
@@ -18,6 +19,20 @@ use \App\Http\Controllers\ShortCodeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('cars', [CarController::class, 'index'])->name('cars.index');
+Route::get('/image/{name}',[CarController::class, 'display'])
+    ->name('image.cars')
+    ->middleware('auth');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('cars', CarController::class)->except(['index']);
+});
+
+Route::middleware( 'auth')->group(function () {
+    Route::resource('owners', OwnerController::class);
+});
+
+
 
 Route::get('cars', [CarController::class, 'index'])->name('cars.index');
 Route::middleware(['auth', 'role', 'shortcode' ])->group(function (){
@@ -31,17 +46,27 @@ Route::middleware( ['auth', 'role', 'shortcode'])->group(function () {
 
 });
 
+Route::get('cars', [CarController::class, 'index'])->name('cars.index');
+Route::get('/carGallery/{name}',[CarController::class, 'carGalleryImage'])
+    ->name('carGallery.carGalleryImage')
+    ->middleware('auth');
 
+Route::middleware( ['auth', 'role', 'shortcode'])->group(function () {
+    Route::resource('car_gallery', CarGalleryController::class)->except(['index']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    Route::resource('cars', CarController::class);
-//Route::get('/cars',[CarController::class, 'showCars' ])->name('cars');
-    Route::resource('owners', OwnerController::class);
-//Route::get('/owners',[OwnerController::class, 'showOwners' ])->name('owners');
 });
+
+
+
+//Route::middleware('auth')->group(function () {
+//    Route::get('/', function () {
+//        return view('welcome');
+//    });
+//    Route::resource('cars', CarController::class);
+////Route::get('/cars',[CarController::class, 'showCars' ])->name('cars');
+//    Route::resource('owners', OwnerController::class);
+////Route::get('/owners',[OwnerController::class, 'showOwners' ])->name('owners');
+//});
 
 Route::get('/image/{name}',[ImageController::class,'display'])
     ->name('image.display')
@@ -49,7 +74,15 @@ Route::get('/image/{name}',[ImageController::class,'display'])
 Route::get('/carImage/{id}',[ImageController::class,'carImage'])
     ->name('image.carImage')
     ->middleware('auth');
-
+Route::get('/carGallery/{name}',[ImageController::class,'display'])
+    ->name('carGallery.display')
+    ->middleware('auth');
+Route::get('/carImage/{id}',[ImageController::class,'carImage'])
+    ->name('carGallery.carImage')
+    ->middleware('auth');
+Route::get('/carGalleryImage/{id}',[ImageController::class,'carGalleryImage'])
+    ->name('carGallery.carGalleryImage')
+    ->middleware('auth');
 
 Route::resource('shortcodes', ShortCodeController::class);
 Auth::routes();

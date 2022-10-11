@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\CarGallery;
 use App\Models\Owner;
 use App\Models\User;
 
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Validator;
 
 class CarController extends Controller
 {
+    public function display($name, Request $request){
+        $file=storage_path('app/'.$name);
+        return response()->file($file);
+    }
+    public function carImage($carId){
+        $carGallery=CarGallery::find($carId);
+        $file=storage_path('app/car_gallery/'.$carGallery->image);
+        return response()->file($file);
+    }
 
     public function __construct()
     {
@@ -63,7 +73,7 @@ class CarController extends Controller
         ]);
 
         $car=new Car();
-
+        $car->id=$request->id;
         $car->reg_number=$request->reg_number;
         $car->brand=$request->brand;
         $car->model=$request->model;
@@ -80,7 +90,9 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+
+        $owners=Owner::all();
+        return view('cars.show', ['car'=>$car, 'owners'=>$owners]);
     }
 
     /**

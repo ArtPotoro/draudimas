@@ -3,9 +3,9 @@
     <div class="container">
 
         <div class="d-grid gap-2 col-6 mx-auto">
-            <a class="btn btn-primary btn-lg btn-block" href="{{ route('owners.create') }}">Add Owner</a>
+            <a class="btn btn-primary btn-lg btn-block" href="{{ route('owners.index') }}">Owner Info</a>
             <a class="btn btn-warning btn-lg btn-block" href="{{ route('cars.index') }}">Cars Info</a>
-            <a class="btn btn-primary btn-lg bnt-block" href="{{ route('shortcodes.create') }}">Add Short Code</a>
+            <a class="btn btn-success btn-lg bnt-block" href="{{ route('shortcodes.create') }}">Add Short Code</a>
         </div>
         <table class="table table-striped">
             <thead>

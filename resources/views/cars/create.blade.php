@@ -10,7 +10,7 @@
         </div>
     @endif
 
-    <form action="{{ route('cars.store') }}" method="post">
+    <form action="{{ route('cars.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label class="form-label">Reg_number:</label>
@@ -47,6 +47,10 @@
 {{--                    {{$error}} <br>--}}
 {{--                @endforeach--}}
 {{--            @endif--}}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Photo</label>
+            <input type="file" class="form-control" name="image">
         </div>
 
 
